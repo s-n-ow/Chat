@@ -5,7 +5,6 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     username:String,
     room:String,
-    subJect:String,
     id:String
 });
 

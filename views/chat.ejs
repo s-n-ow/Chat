@@ -11,8 +11,6 @@
         <header class="chatbox-header">
             <h4>Room:</h4>
             <h4 id= "room-name"><%=room%></h4>
-            <h4>Subject:</h4>
-            <h4 id= "subject-name"><%=subject%></h4>
             <a href="/" class="btn">Leave Room</a>
         </header>
 
@@ -41,11 +39,10 @@
         const userList = document.getElementById('users');
         const userName = '<%=username%>';
         const roomName = '<%=room%>';
-        const subject = '<%=subject%>';
 
         var socket = io();
 
-        socket.emit('joinRoom', { userName, roomName, subject});
+        socket.emit('joinRoom', { userName, roomName});
 
         socket.on('currentUsers', arr => {
             var i;

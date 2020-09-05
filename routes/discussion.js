@@ -13,12 +13,12 @@ router.get('/', (req, res) => {
 });
 
 router.get('/chat', (req, res) => {
-    res.render('chat.ejs',{username: req.query.username, room: req.query.room, subject: req.query.subject});
+    res.render('chat.ejs',{username: req.query.username, room: req.query.room});
 });
 
 router.post('/chat', urlencodedParser, (req, res) => {
     console.log(req.body);
-    res.redirect('/chat?username='+req.body.username+'&room='+req.body.room+'&subject='+req.body.subject);
+    res.redirect('/chat?username='+req.body.username+'&room='+req.body.room);
 });
 
 const url = 'mongodb://localhost:27017/ioChat';
@@ -29,12 +29,11 @@ mongoose.connect(url, (err, db) => {
 
     io.on('connection', (socket) => {
 
-        socket.on('joinRoom',({userName, roomName, subject}) => {
+        socket.on('joinRoom',({userName, roomName}) => {
 
             const user = new users({
                 username:userName,
                 room:roomName,
-                subJect:subject,
                 id:socket.id
             });
 
