@@ -4,24 +4,24 @@ const io = require('../app');
 const users = require('../models/users');
 const router = express.Router();
 const bodyParser = require('body-parser');
+const formatMessage = require('../utils/messages');
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
-
 
 router.get('/', (req, res) => {
     res.render('index.ejs');
 });
 
 router.get('/chat', (req, res) => {
-    res.render('chat.ejs',{username: req.query.username, room: req.query.room});
+    res.render('chat.ejs',{username: req.query.username, room: req.query.room, subject: req.query.subject});
 });
 
 router.post('/chat', urlencodedParser, (req, res) => {
     console.log(req.body);
-    res.redirect('/chat?username='+req.body.name+'&room='+req.body.room);
+    res.redirect('/chat?username='+req.body.username+'&room='+req.body.room+'&subject='+req.body.subject);
 });
 
-const url = 'mongodb://localhost:27017/mongoChat';
+const url = 'mongodb://localhost:27017/ioChat';
 
 mongoose.connect(url, (err, db) => {
 
@@ -29,52 +29,74 @@ mongoose.connect(url, (err, db) => {
 
     io.on('connection', (socket) => {
 
-        socket.on('joinRoom',({userName, roomName}) => {
+        socket.on('joinRoom',({userName, roomName, subject}) => {
 
             const user = new users({
-                name:userName,
-                room:roomName
+                username:userName,
+                room:roomName,
+                subJect:subject,
+                id:socket.id
             });
 
-            user.save();
+            user.save()
+            .then(() => {
+                users.find({room: user.room}).sort({_id:1})
+                .then((arr) => {
+                io.to(user.room).emit('currentUsers',arr);
+                })
+                .catch((err) => {
+                    throw err;
+            });
+            });
 
             socket.join(user.room);
 
             let roomChat = db.collection(`${user.room}`);
 
-            socket.emit('message', 'Welcome to Discussion Portal!');
+            socket.emit('message', formatMessage('BOT', 'Welcome to Discussion Portal!'));
 
              //broadcasts when a user connects
-            socket.broadcast.to(user.room).emit('message', `${user.name} has joined the chat`);
+            socket.broadcast.to(user.room).emit('message', formatMessage('BOT',`${user.username} has joined the chat`));
+
+            //print the current users when someone joins
 
             //printing the saved chats
             roomChat.find().limit(100).sort({_id:1}).toArray((err, res) => {
                 if(err){
                     throw err;
                 }
-    
                 //emit the message
-                socket.emit('output',res);
-                });
-
-            //listen for chat-message
-            socket.on('chatMessage', (data) => {
-                const name = data.name;
-                const message = data.message;
-                console.log(data);
-                roomChat.insert({name: name, message: message}, () => {
-                    io.emit('output', data);
-                });
-    
+                socket.emit('previous',res);
             });
 
+
+            //listen for chat-message
+            socket.on('chatMessage',  msg => {
+                const data = formatMessage(user.username, msg);
+                roomChat.insert({name: data.username, message: data.message, time: data.time, room: user.room}, () => {
+                    io.to(user.room).emit('output', data);
+                });
+
+            });
 
             //when clients disconnect
             socket.on('disconnect', () => {
-                io.emit('message', 'A USER has left a chat');
+                socket.broadcast.to(user.room).emit('message', formatMessage('BOT',`${user.username} has left a chat`));
+                user.remove({id: socket.id})
+                .then(() => {
+                    users.find({room: user.room}).sort({_id:1})
+                    .then((arr) => {
+                        io.to(user.room).emit('currentUsers',arr);
+                    })
+                    .catch((err) => {
+                         throw err;
+                    });
+                });
+
             });
 
         });
+
 
     });
 

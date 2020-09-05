@@ -11,14 +11,15 @@
         <header class="chatbox-header">
             <h4>Room:</h4>
             <h4 id= "room-name"><%=room%></h4>
-            <a href="/index.ejs" class="btn">Leave Room</a>
+            <h4>Subject:</h4>
+            <h4 id= "subject-name"><%=subject%></h4>
+            <a href="/" class="btn">Leave Room</a>
         </header>
 
         <div class="chatbox-main">
             <div class="chatbox-side">
                 <h4>Users</h4>
                 <ul id= "users">
-                    <li>shristi</li>
                 </ul>
 
             </div>
@@ -37,20 +38,31 @@
     <script>
         const chatForm = document.getElementById('chat-form');
         const chatMessages = document.querySelector('.chatbox-message');
+        const userList = document.getElementById('users');
         const userName = '<%=username%>';
         const roomName = '<%=room%>';
+        const subject = '<%=subject%>';
 
         var socket = io();
 
-        socket.emit('joinRoom', { userName, roomName });
+        socket.emit('joinRoom', { userName, roomName, subject});
+
+        socket.on('currentUsers', arr => {
+            var i;
+            userList.innerHTML = `
+            ${arr.map(user => `<li>${user.username}</li>`).join('')}
+            `;
+
+        });
 
         //message from server
-        socket.on('message', msg => {
-            console.log(msg);
-
+        socket.on('message', data => {
+            const name = data.username;
+            const msg = data.message;
+            const time = data.time;
             const div = document.createElement('div');
             div.classList.add('message');
-            div.innerHTML = `<p class="info">${name} <span>Time</span></p>
+            div.innerHTML = `<p class="info">${name} <span>${time}</span></p>
                     <p class="text">${msg}</p>`;
             document.querySelector('.chatbox-message').appendChild(div);
 
@@ -60,12 +72,13 @@
         });
 
 
-        socket.on('output', data => {
+        socket.on('output', (data) => {
             const div = document.createElement('div');
             div.classList.add('message');
-            const name = data.name;
+            const name = data.username;
             const message = data.message;
-            div.innerHTML = `<p class="info">${name} <span>Time</span></p>
+            const time = data.time;
+            div.innerHTML = `<p class="info">${name} <span>${time}</span></p>
                     <p class="text">${message}</p>`;
             document.querySelector('.chatbox-message').appendChild(div);
 
@@ -79,13 +92,27 @@
             const msg = e.target.elements.msg.value;
 
             //emitting a message to server
-            socket.emit('chatMessage', {
-                name: '<%=username%>',
-                message: msg
-            } );
+            socket.emit('chatMessage', msg );
 
             e.target.elements.msg.value = '';
             e.target.elements.msg.focus();
+        });
+
+        socket.on('previous', arr => {
+            var i;
+            for(i=0;i<arr.length;i++){
+                const div = document.createElement('div');
+                div.classList.add('message');
+                const name = arr[i].name;
+                const message = arr[i].message;
+                const time = arr[i].time;
+                div.innerHTML = `<p class="info">${name} <span>${time}</span></p>
+                    <p class="text">${message}</p>`;
+                 document.querySelector('.chatbox-message').appendChild(div);
+
+                //scroll down
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            };
         });
 
 

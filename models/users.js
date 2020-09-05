@@ -4,8 +4,10 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
     username:String,
-    room:String
-}); 
+    room:String,
+    subJect:String,
+    id:String
+});
 
 
 var user = mongoose.model('user',userSchema);

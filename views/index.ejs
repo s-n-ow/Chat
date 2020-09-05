@@ -9,14 +9,21 @@
         <div>
             <form method="POST" action="/chat">
                 <label for="username">Username</label>
-                <input name="name" type="text" placeholder="Username" required/>
+                <input name="username" type="text" placeholder="Username" required/>
                 <label for="room">Room Name</label>
-                <input name="room" type="text" placeholder="Room" required/>
+                <select id="room" name="room">
+                    <option value="Science">Science</option>
+                    <option value="Maths">Maths</option>
+                    <option value="Social Science">Social Science</option>
+                    <option value="HIndi">HIndi</option>
+                    <option value="English">English</option>
+                </select>
+                <label for="subject">Subject</label>
+                <input name="subject" type="text" placeholder="Subject" required/>
                 <button class="btn">Submit</button>
 
             </form>
         </div>
-
 
     </body>
 </html>
