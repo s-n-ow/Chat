@@ -22,8 +22,7 @@ router.post('/chat', urlencodedParser, (req, res) => {
 });
 
 const url = 'mongodb+srv://user123:user12345@chat.ascyc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-
-mongoose.connect(url,{ useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
+mongoose.connect(url, (err, db) => {
 
     console.log('connected to database');
 
