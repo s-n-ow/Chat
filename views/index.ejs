@@ -1,27 +1,66 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Discussion Forum</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    </head>
-    <body>
-        <div>
-            <form method="POST" action="/chat">
-                <label for="username">Username</label>
-                <input name="username" type="text" placeholder="Username" required/>
-                <label for="room">Room Name</label>
-                <select id="room" name="room">
-                    <option value="Science">Science</option>
-                    <option value="Maths">Maths</option>
-                    <option value="Social Science">Social Science</option>
-                    <option value="HIndi">HIndi</option>
-                    <option value="English">English</option>
-                </select>
-                <button class="btn">Submit</button>
+<head>
+    <title>Discussion Forum</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/index.css">
+</head>
 
-            </form>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark" id="styling">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">ChatServer</a>
+
+
         </div>
+    </nav>
+    <div id="content">
 
-    </body>
+        <div id="checkit">
+            <div class="heading">
+                <h2>Start Here</h2>
+            </div>
+            <div class="inputs">
+                <form method="POST" action="/chat">
+                    <div class="row mb-3 wide">
+                        <label for="username" class="col-sm-2 col-form-label">Username</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="inputEmail3" name="username" type="text"
+                                placeholder="Username" required />
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3 wide">
+                        <label for="room" class="col-sm-2  form-label col-form-label">Room</label>
+                        <div class="col-sm-10">
+                            <select id="room" class="form-select" name="room">
+                                <option value="Science">Science</option>
+                                <option value="Maths">Maths</option>
+                                <option value="Social Science">Social Science</option>
+                                <option value="HIndi">HIndi</option>
+                                <option value="English">English</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div id="btnDiv">
+                        <button class="btn button">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
 </html>

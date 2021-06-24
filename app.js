@@ -12,6 +12,8 @@ const server = http.createServer(app);
 const io = require('socket.io')(server);
 module.exports = io;
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 const discussion = require('./routes/discussion');
 
 const port = 3000 || process.env.port;
@@ -23,7 +25,6 @@ app.use('/',discussion);
 
 
 app.set('view engine', 'ejs');
-
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}`);
 });
