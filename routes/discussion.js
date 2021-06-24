@@ -21,9 +21,9 @@ router.post('/chat', urlencodedParser, (req, res) => {
     res.redirect('/chat?username='+req.body.username+'&room='+req.body.room);
 });
 
-const url = 'mongodb://localhost:27017/ioChat';
+const url = 'mongodb+srv://user123:user12345@chat.ascyc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
-mongoose.connect(url, (err, db) => {
+mongoose.connect(url,{ useNewUrlParser: true, useUnifiedTopology: true }, (err, db) => {
 
     console.log('connected to database');
 
