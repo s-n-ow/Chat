@@ -9,8 +9,10 @@ const mongoose = require('mongoose');
 
 const server = http.createServer(app);
 
-const io = require('socket.io').listen(server);
+const io = require('socket.io')(server);
 module.exports = io;
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 const discussion = require('./routes/discussion');
 
@@ -23,7 +25,6 @@ app.use('/',discussion);
 
 
 app.set('view engine', 'ejs');
-
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}`);
 });
