@@ -1,10 +1,83 @@
-body{
-    background-color: burlywood;
-}
-#checkit{
-    margin: 50px;
-}
+
 #styling {
     background-color: #563d7c;
     width: 100%;
+}
+#top{
+    border: 2px solid black;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+    padding: 2px;
+    margin: 10px;
+border-radius: 2px;
+}
+#head1{
+    /* border:2px solid red; */
+    color: #563d7c;
+    margin: 10px;
+    padding: 10px;
+}
+#head2{
+    /* border: 2px solid #563d7c; */
+    position: absolute;
+    top: 84px;
+    right: 25px;
+    border-radius:4px;
+}
+#styleBtn{
+    font-size: 20px;
+    color:white;
+    background-color:#563d7c ;
+}
+#room-name{
+    font-size: 20px;
+}
+.main-body{
+    display: flex;
+    /* border: 2px solid yellow; */
+    /* margin: 10px; */
+   
+}
+.chatbox-main{
+    margin: 10px;
+    border: 2px solid black; 
+    border-radius: 2px;
+    width: 25%;
+}
+.chatbox-side{
+    margin: 5px;
+    /* border: 2px solid red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px;
+}
+.side{
+    margin: 5px;
+    padding: 5px;
+}
+.chatform-container{
+    margin: 10px;
+    padding: 10px;
+    width: 75%;
+    border: 2px solid black;
+    border-radius: 2px;
+}
+.chatbox-message{
+    margin: 10px;
+    /* border: 2px solid green; */
+}
+#clrbtn{
+    color:white;
+    background-color:#563d7c ;
+}
+#chat-form{
+margin: 10px;
+/* border:  2px solid brown; */
+}
+#msgBox{
+    display: flex;
+
 }
