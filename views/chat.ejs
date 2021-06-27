@@ -128,7 +128,7 @@
             const div = document.createElement('div');
             div.classList.add('message');
             div.innerHTML = `<p class="info">${name} <span>${time}</span></p>
-                    <p class="text">${msg}</p>`;
+                    <p class="text" style="text-decoration:underline"> ${msg}</p>`;
             document.querySelector('.chatbox-message').appendChild(div);
 
             //scroll down
@@ -171,8 +171,8 @@
                 const name = arr[i].name;
                 const message = arr[i].message;
                 const time = arr[i].time;
-                div.innerHTML = `<p class="info">${name} <span>${time}</span></p>
-                    <p class="text">${message}</p>`;
+                div.innerHTML = `<p class="info" style="font-weight:bold">&#10148;${name} <span>${time}</span></p>
+                    <p class="text" >${message}</p>`;
                 document.querySelector('.chatbox-message').appendChild(div);
 
                 //scroll down
